@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.item_city.view.*
 
-class CitiesAdapter:
+class CitiesAdapter :
         ListAdapter<City, CitiesAdapter.CityViewHolder>(CityDiffCallback()) {
     private var mListener: OnCityListClickListener? = null
 
@@ -46,7 +46,7 @@ class CitiesAdapter:
         }
     }
 
-    interface OnCityListClickListener{
+    interface OnCityListClickListener {
         fun onClick(city: City)
     }
 }

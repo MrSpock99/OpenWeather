@@ -37,7 +37,6 @@ class CitiesFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val rootView: View = inflater.inflate(R.layout.fragment_cities, container, false)
         rootView.rv_cities.apply {
             layoutManager = LinearLayoutManager(rootView.context)
@@ -68,7 +67,6 @@ class CitiesFragment : Fragment() {
         return rootView
     }
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteraction) {
@@ -92,4 +90,3 @@ class CitiesFragment : Fragment() {
         }
     }
 }
-

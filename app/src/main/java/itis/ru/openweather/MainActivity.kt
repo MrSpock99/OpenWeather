@@ -3,11 +3,11 @@ package itis.ru.openweather
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
                     LOCATION_INTERNET_PERMISSION)
         } else {
             getDeviceLocation()
-            pushFragment(CitiesFragment.newInstance(lat,lon))
+            pushFragment(CitiesFragment.newInstance(lat, lon))
         }
     }
 
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     getDeviceLocation()
-                    pushFragment(CitiesFragment.newInstance(lat,lon))
+                    pushFragment(CitiesFragment.newInstance(lat, lon))
                 } else {
                     Toast.makeText(this, "I need your it!!!", Toast.LENGTH_SHORT).show()
                 }
