@@ -1,6 +1,7 @@
 package itis.ru.openweather
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -50,17 +51,23 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
                     getDeviceLocation()
                     pushFragment(CitiesFragment.newInstance(lat, lon))
                 } else {
-                    Toast.makeText(this, "I need your it!!!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.toast_permission), Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
         fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
-                    lat = location?.latitude
-                    lon = location?.longitude
+                        if (location != null) {
+                            lat = location.latitude
+                            lon = location.longitude
+                        }else{
+                            lat = 55.8304
+                            lon = 49.0661
+                        }
                 }
     }
 
