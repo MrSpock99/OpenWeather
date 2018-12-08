@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
     private var lat: Double? = 0.0
     private var lon: Double? = 0.0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,7 +37,6 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
                     LOCATION_INTERNET_PERMISSION)
         } else {
             getDeviceLocation()
-            pushFragment(CitiesFragment.newInstance(lat, lon))
         }
     }
 
@@ -49,7 +47,6 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     getDeviceLocation()
-                    pushFragment(CitiesFragment.newInstance(lat, lon))
                 } else {
                     Toast.makeText(this, getString(R.string.toast_permission), Toast.LENGTH_SHORT).show()
                 }
@@ -68,6 +65,7 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
                             lat = 55.8304
                             lon = 49.0661
                         }
+                    pushFragment(CitiesFragment.newInstance(lat, lon))
                 }
     }
 
