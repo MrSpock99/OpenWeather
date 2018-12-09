@@ -15,13 +15,12 @@ class WeatherCityFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_weather_city, container, false)
-        rootView.tv_cityName.text = city?.name
-        rootView.tv_humidity.text = city?.main?.humidity.toString()
-        rootView.tv_press.text = city?.main?.pressure.toString()
-        rootView.tv_temperature.text = city?.main?.temp.toString()
-        rootView.tv_wind.text = city?.wind?.deg.toString()
+        rootView.tv_cityName.text = getString(R.string.tv_cityName_text, city?.name)
+        rootView.tv_humidity.text = getString(R.string.tv_humidity_text, city?.main?.humidity.toString())
+        rootView.tv_press.text = getString(R.string.tv_press_text, city?.main?.pressure.toString())
+        rootView.tv_temperature.text = getString(R.string.tv_temp_text, city?.main?.temp.toString())
+        rootView.tv_wind.text = getString(R.string.tv_wind_text, city?.wind?.deg.toString())
         return rootView
     }
 

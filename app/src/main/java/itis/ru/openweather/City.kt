@@ -1,15 +1,29 @@
 package itis.ru.openweather
 
+import android.arch.persistence.room.Embedded
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "city")
 data class City(
+        @SerializedName("id")
+        @PrimaryKey(autoGenerate = true)
+        var id: Int? = null,
+
         @SerializedName("name")
         var name: String? = null,
+
         @SerializedName("sys")
+        @Embedded
         var sys: Sys? = null,
+
         @SerializedName("main")
+        @Embedded
         var main: WeatherTemp? = null,
+
         @SerializedName("wind")
+        @Embedded
         var wind: Wind? = null
 )
 
