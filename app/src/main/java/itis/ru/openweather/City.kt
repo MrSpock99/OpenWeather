@@ -8,22 +8,22 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "city")
 data class City(
         @SerializedName("id")
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         var id: Int? = null,
 
         @SerializedName("name")
         var name: String? = null,
 
         @SerializedName("sys")
-        @Embedded
+        @Embedded(prefix = "sys")
         var sys: Sys? = null,
 
         @SerializedName("main")
-        @Embedded
+        @Embedded(prefix = "main")
         var main: WeatherTemp? = null,
 
         @SerializedName("wind")
-        @Embedded
+        @Embedded(prefix = "wind")
         var wind: Wind? = null
 )
 

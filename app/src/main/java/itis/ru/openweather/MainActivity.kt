@@ -58,13 +58,13 @@ class MainActivity : AppCompatActivity(), OnFragmentInteraction {
     private fun getDeviceLocation() {
         fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
-                        if (location != null) {
-                            lat = location.latitude
-                            lon = location.longitude
-                        }else{
-                            lat = 55.8304
-                            lon = 49.0661
-                        }
+                    if (location != null) {
+                        lat = location.latitude
+                        lon = location.longitude
+                    } else {
+                        lat = 55.8304
+                        lon = 49.0661
+                    }
                     pushFragment(CitiesFragment.newInstance(lat, lon))
                 }
     }

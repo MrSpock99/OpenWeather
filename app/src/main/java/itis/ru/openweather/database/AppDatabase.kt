@@ -8,7 +8,7 @@ import itis.ru.openweather.City
 
 private const val DB_NAME: String = "OPEN_WEATHER.db"
 
-@Database(entities = [City::class], version = 1)
+@Database(entities = [City::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherDataDao(): WeatherDataDao
 
@@ -20,6 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
                 synchronized(AppDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                             AppDatabase::class.java, DB_NAME)
+                            .fallbackToDestructiveMigration()
                             .build()
                 }
             }

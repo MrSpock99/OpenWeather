@@ -7,15 +7,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import itis.ru.openweather.*
 import itis.ru.openweather.database.AppDatabase
-import kotlinx.android.synthetic.main.fragment_cities.view.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.android.synthetic.main.fragment_cities.*
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -41,8 +38,12 @@ class CitiesFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val rootView: View = inflater.inflate(R.layout.fragment_cities, container, false)
-        rootView.rv_cities.apply {
+        return inflater.inflate(R.layout.fragment_cities, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rv_cities.apply {
             layoutManager = LinearLayoutManager(rootView.context)
         }
         val retrofit = Retrofit.Builder()
@@ -51,18 +52,27 @@ class CitiesFragment : Fragment() {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
         val service = retrofit.create(OpenWeatherApiService::class.java)
-
-        service.getCityList(lat, lon).enqueue(object : Callback<CitiesForecast> {
-            override fun onFailure(call: Call<CitiesForecast>?, t: Throwable?) {
-                loadFromDatabase(rootView)
-            }
-            override fun onResponse(call: Call<CitiesForecast>?, response: Response<CitiesForecast>) {
-                val cityList = response.body().list
-                saveToDatabase(cityList)
-                submitList(cityList, rootView)
-            }
-        })
-        return rootView
+        val db = context?.let { AppDatabase.getInstance(it) }
+        val weatherDataDao = db?.weatherDataDao()
+        service.getCityList(lat, lon)
+                .subscribeOn(Schedulers.io())
+                .map { it.list }
+                .map {
+                    weatherDataDao?.nukeTable()
+                    weatherDataDao?.insert(it)
+                    it
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy({
+                    submitList(it)
+                }, onError = {
+                    weatherDataDao?.getAll()
+                            ?.subscribeOn(Schedulers.io())
+                            ?.observeOn(AndroidSchedulers.mainThread())
+                            ?.subscribe {
+                                submitList(it)
+                            }
+                })
     }
 
     override fun onAttach(context: Context) {
@@ -79,29 +89,7 @@ class CitiesFragment : Fragment() {
         listener = null
     }
 
-    private fun loadFromDatabase(view: View) {
-        val db = context?.let { AppDatabase.getInstance(it) }
-        val weatherDataDao = db?.weatherDataDao()
-        weatherDataDao?.getAll()
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe {
-                    submitList(it, view)
-                }
-    }
-
-    private fun saveToDatabase(cityList: List<City>?) {
-        val db = context?.let { AppDatabase.getInstance(it) }
-        val weatherDataDao = db?.weatherDataDao()
-        Observable.just(db)
-                .subscribeOn(Schedulers.io())
-                .subscribe { db ->
-                    weatherDataDao?.nukeTable()
-                    cityList?.forEach { weatherDataDao?.insert(it) }
-                }
-    }
-
-    private fun submitList(cityList: List<City>?, view: View) {
+    private fun submitList(cityList: List<City>?) {
         listAdapter = CitiesAdapter()
         listAdapter.submitList(cityList)
         listAdapter.setOnItemClickListener(object : CitiesAdapter.OnCityListClickListener {
@@ -110,7 +98,7 @@ class CitiesFragment : Fragment() {
                 listener?.pushFragment(WeatherCityFragment.newInstance())
             }
         })
-        view.rv_cities.adapter = listAdapter
+        rv_cities.adapter = listAdapter
     }
 
     companion object {
