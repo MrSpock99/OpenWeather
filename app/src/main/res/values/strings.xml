@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 
 <resources>
-  <string name="app_name">OpenWeather</string>
-  <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">OpenWeather</string>
     <string name="toast_permission">I need those permissions</string>
     <string name="tv_cityName_text">City: %1$s</string>
     <string name="tv_temp_text">Temperature: %1$s</string>
-  <string name="tv_wind_text">Wind direction: %1$s</string>
-  <string name="tv_humidity_text">Humidity: %1$s</string>
-  <string name="tv_press_text">Press: %1$s</string>
+    <string name="tv_wind_text">Wind direction: %1$s</string>
+    <string name="tv_humidity_text">Humidity: %1$s</string>
+    <string name="tv_press_text">Press: %1$s</string>
 </resources>

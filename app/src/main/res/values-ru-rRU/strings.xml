@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenWeather</string>
+    <string name="toast_permission">Мне нужны эти разрешения</string>
+    <string name="tv_cityName_text">Город: %1$s</string>
+    <string name="tv_temp_text">Температура: %1$s</string>
+    <string name="tv_wind_text">Направление ветра: %1$s</string>
+    <string name="tv_humidity_text">Влажность: %1$s</string>
+    <string name="tv_press_text">Давление: %1$s</string>
+</resources>
