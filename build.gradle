@@ -15,6 +15,17 @@ buildscript {
     }
 }
 
+plugins {
+    id("io.gitlab.arturbosch.detekt").version("1.0.0-RC14")
+}
+
+detekt {
+    toolVersion = "1.0.0-RC14"
+    input = files("src/main/java")
+    filters = ".*/resources/.*,.*/build/.*"
+    baseline = file("my-detekt-baseline.xml") // Just if you want to create a baseline file.
+}
+
 allprojects {
     repositories {
         google()
